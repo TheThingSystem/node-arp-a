@@ -1,8 +1,7 @@
 {
   "name"           : "arp-a"
 , "version"        : "0.0.1"
-, "description"    : "node.js native implementation (when possible) of "arp -a"
-for the Arp-A Wi-Fi Plant Sensor"
+, "description"    : "node.js native implementation (when possible) of 'arp -a'"
 , "author": {
     "name"           : "Marshall Rose"
   , "email"          : "mrose17@gmail.com"
@@ -20,5 +19,5 @@ for the Arp-A Wi-Fi Plant Sensor"
     "node"         : ">=0.10"
   }
 , "readmeFilename" : "README.md"
-, "readme"         : "node-arp-a\n==========\n\nA node.js native implementation (when possible) of "arp -a"\n\nWhy not use [the arp module](https://github.com/teknopaul/arp)?\nI dislike parsing programmatic output (which can change at any time),\nand prefer using API-based approaches. That's possible for Linux and Mac OS.\n\nAlso, I wanted a node.js module that returns the entire ARP table.\n\n\nInstall\n-------\n\n    npm install arp-a\n\n\nAPI\n---\n\n    var arp = require('./arp-a')\n      , fin = 0\n      , tbl = { ipaddrs: {}, macaddrs : {} }\n      ;\n\n    arp.table(function(err, entry) {\n      if (err) console.log('arp: ' + err.message);\n      if (!entry) {\n        fin = 1;\n        return;\n      }\n\n      tbl.ipaddrs[entry.ip] = entry.mac;\n      tbl.macaddrs[entry.mac] = entry.ip;\n    });\n"
+, "readme"         : "node-arp-a\n==========\n\nA node.js native implementation (when possible) of 'arp -a'\n\nWhy not use [the arp module](https://github.com/teknopaul/arp)?\nI dislike parsing programmatic output (which can change at any time),\nand prefer using API-based approaches. That's possible for Linux and Mac OS.\n\nAlso, I wanted a node.js module that returns the entire ARP table.\n\n\nInstall\n-------\n\n    npm install arp-a\n\n\nAPI\n---\n\n    var arp = require('./arp-a')\n      , fin = 0\n      , tbl = { ipaddrs: {}, macaddrs : {} }\n      ;\n\n    arp.table(function(err, entry) {\n      if (err) console.log('arp: ' + err.message);\n      if (!entry) {\n        fin = 1;\n        return;\n      }\n\n      tbl.ipaddrs[entry.ip] = entry.mac;\n      tbl.macaddrs[entry.mac] = entry.ip;\n    });\n"
 }
