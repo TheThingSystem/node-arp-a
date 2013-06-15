@@ -7,11 +7,9 @@
       if (err) console.log('arp: ' + err.message);
       if (!entry) {
         fin = 1;
-console.log(JSON.stringify(tbl));
-        return;
+        return console.log(JSON.stringify(tbl));
       }
 
       tbl.ipaddrs[entry.ip] = entry.mac;
       tbl.macaddrs[entry.mac] = entry.ip;
-// {"ipaddrs":{"192.168.1.1":"50:67:f0:8c:7a:3f"},"macaddrs":{"50:67:f0:8c:7a:3f":"192.168.1.1"}}
     });
