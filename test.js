@@ -1,4 +1,4 @@
-    var arp = require('./arp-a')
+    var arp = require('./index')
       , fin = 0
       , tbl = { ipaddrs: {}, macaddrs : {} }
       ;
