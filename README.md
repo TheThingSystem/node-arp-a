@@ -19,7 +19,7 @@ Install
 API
 ---
 
-    var arp = require('./arp-a')
+    var arp = require('arp-a')
       , fin = 0
       , tbl = { ipaddrs: {}, macaddrs : {} }
       ;
