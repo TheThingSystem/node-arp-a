@@ -20,16 +20,12 @@ API
 ---
 
     var arp = require('arp-a')
-      , fin = 0
       , tbl = { ipaddrs: {}, macaddrs : {} }
       ;
 
     arp.table(function(err, entry) {
-      if (err) console.log('arp: ' + err.message);
-      if (!entry) {
-        fin = 1;
-        return;
-      }
+      if (!!err) return console.log('arp: ' + err.message);
+      if (!entry) return;
 
       tbl.ipaddrs[entry.ip] = entry.mac;
       tbl.macaddrs[entry.mac] = entry.ip;
