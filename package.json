@@ -1,6 +1,6 @@
 {
   "name"           : "arp-a"
-, "version"        : "0.2.1"
+, "version"        : "0.2.2"
 , "description"    : "node.js native implementation (when possible) of 'arp -a'"
 , "author": {
     "name"           : "Marshall Rose"
@@ -8,10 +8,10 @@
   }
 , "repository": {
     "type"         : "git",
-    "url"          : "https://github.com/mrose17/node-arp-a.git"
+    "url"          : "https://github.com/TheThingSystem/node-arp-a.git"
   }
 , "bugs"           : {
-    "url"          : "https://github.com/mrose17/node-arp-a/issues"
+    "url"          : "https://github.com/TheThingSystem/node-arp-a/issues"
   }
 , "keywords"       : [ "arp", "arp table" ]
 , "main"           : "./index.js"
