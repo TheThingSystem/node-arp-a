@@ -10,6 +10,9 @@
 #include <netinet/if_ether.h>
 #include <net/if_dl.h>
 
+#include <ifaddrs.h>
+#include <arpa/inet.h>
+
 
 using namespace v8;
 using namespace node;
@@ -78,11 +81,53 @@ Handle<Value> ArpTable(const Arguments& args) {
 }
 
 
+Handle<Value> IfTable(const Arguments& args) {
+  HandleScope         scope;
+
+  int                 i;
+  struct ifaddrs     *ifa, *ifp;
+  struct sockaddr_dl *sdl;
+
+  if (getifaddrs(&ifp) < 0) return ThrowException(Exception::Error(String::New("getifaddrs failed.")));
+
+  i = 0;
+  for (ifa = ifp; ifa; ifa = ifa->ifa_next) if (ifa->ifa_addr->sa_family == AF_LINK) {
+    sdl = (struct sockaddr_dl *)ifa->ifa_addr;
+    if (sdl->sdl_alen != 6)
+
+    i++;
+  }
+
+  Local<Array> entries = Array::New(i);
+
+  i = 0;
+  for (ifa = ifp; ifa != NULL; ifa = ifa->ifa_next) if (ifa->ifa_addr->sa_family == AF_LINK) {
+    sdl = (struct sockaddr_dl *)ifa->ifa_addr;
+    if (sdl->sdl_alen != 6) continue;
+
+    char    lladdr[(6 * 3) + 1];
+    u_char *ll = (u_char *) LLADDR(sdl);
+    snprintf(lladdr, sizeof lladdr, "%02x:%02x:%02x:%02x:%02x:%02x", ll[0], ll[1], ll[2], ll[3], ll[4], ll[5]);
+
+    Local<Object> entry = Object::New();
+
+    entry->Set(NODE_PSYMBOL("name"), String::New(ifa->ifa_name));
+    entry->Set(NODE_PSYMBOL("mac"), String::New(lladdr));
+
+    entries->Set(i++, entry);
+  }
+
+  freeifaddrs(ifp);
+
+  return scope.Close(entries);
+}
+
 extern "C" {
   static void init(Handle<Object> target) {
     HandleScope scope;
 
     target->Set(String::NewSymbol("arpTable"), FunctionTemplate::New(ArpTable)->GetFunction());
+    target->Set(String::NewSymbol("ifTable"),  FunctionTemplate::New(IfTable)->GetFunction());
   }
 }
 

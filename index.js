@@ -3,12 +3,24 @@ var child    = require('child_process')
   ;
 
 if (process.platform.indexOf('darwin') === 0) {
-  exports.table = function(cb) {
-    var arp = require('./build/Release/macos.node');
+  var arp = require('./build/Release/macos.node');
 
+  exports.arpTable = function(cb) {
     var i, table;
 
     try { table = arp.arpTable(); } catch(ex) { return cb(ex, null); }
+
+    for (i = 0; i < table.length; i++) {
+      cb(null, table[i]);
+    }
+
+    cb(null, null);
+  };
+
+  exports.ifTable = function(cb) {
+    var i, table;
+
+    try { table = arp.ifTable(); } catch(ex) { return cb(ex, null); }
 
     for (i = 0; i < table.length; i++) {
       cb(null, table[i]);
@@ -28,11 +40,11 @@ if (process.platform.indexOf('linux') === 0) {
 
  */
 
-  exports.table = function(cb) {
+  exports.arpTable = function(cb) {
     fs.readFile('/proc/net/arp', function(err, data) {
       var cols, i, lines;
 
-      if (err) return cb(err, null);
+      if (!!err) return cb(err, null);
 
       lines = data.toString().split('\n');
       for (i = 0; i < lines.length; i++) {
@@ -45,6 +57,26 @@ if (process.platform.indexOf('linux') === 0) {
       }
 
       cb(null, null);
+    });
+  };
+
+  exports.ifTable = function(cb) {
+    fs.readDir('/sys/class/net', function(err, files) {
+      var i, j;
+
+      if (!!err) return cb(err, null);
+
+      var f = function(ifn) {
+        return function(err, data) {
+          if (!!err) { j = files.length; return cb(err, null); }
+
+          cb (null, { name: ifn, mac: data });
+          if (++j == files.length) cb(null, null);
+        };
+      };
+
+      j = 0;
+      for (i = 0; i < files.length; i++) fs.readFile('/sys/class/net/' + files[i] + '/address', f(files[i]));
     });
   };
 }
@@ -61,7 +93,7 @@ if (process.platform.indexOf('win') === 0) {
 
  */
 
-  exports.table = function(cb) {
+  exports.arpTable = function(cb) {
     var arp, cols, i, lines, stderr, stdout;
 
     stdout = '';
@@ -87,4 +119,9 @@ if (process.platform.indexOf('win') === 0) {
       cb(null, null);
     });
   };
+
+
+  exports.ifTable = function(cb) { cb(new Error('ifTable not supported for windows')); };
 }
+
+exports.table = exports.arpTable;
