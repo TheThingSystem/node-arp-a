@@ -61,7 +61,7 @@ if (process.platform.indexOf('linux') === 0) {
   };
 
   exports.ifTable = function(cb) {
-    fs.readDir('/sys/class/net', function(err, files) {
+    fs.readdir('/sys/class/net', function(err, files) {
       var i, j;
 
       if (!!err) return cb(err, null);
@@ -70,7 +70,7 @@ if (process.platform.indexOf('linux') === 0) {
         return function(err, data) {
           if (!!err) { j = files.length; return cb(err, null); }
 
-          cb (null, { name: ifn, mac: data });
+          cb (null, { name: ifn, mac: data.toString().trim() });
           if (++j == files.length) cb(null, null);
         };
       };
