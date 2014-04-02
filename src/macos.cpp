@@ -93,9 +93,7 @@ Handle<Value> IfTable(const Arguments& args) {
   i = 0;
   for (ifa = ifp; ifa; ifa = ifa->ifa_next) if (ifa->ifa_addr->sa_family == AF_LINK) {
     sdl = (struct sockaddr_dl *)ifa->ifa_addr;
-    if (sdl->sdl_alen != 6)
-
-    i++;
+    if (sdl->sdl_alen == 6) i++;
   }
 
   Local<Array> entries = Array::New(i);
