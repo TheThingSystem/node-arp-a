@@ -12,6 +12,7 @@
     });
 
     arp.ifTable(function(err, entry) {
-      if (err) console.log('arp: ' + err.message);
+      if (err) return console.log('arp: ' + err.message);
+
       if (!!entry) console.log(entry);
     });

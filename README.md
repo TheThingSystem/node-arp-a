@@ -20,7 +20,7 @@ API
 ---
 
     var arp = require('arp-a')
-      , tbl = { ipaddrs: {}, macaddrs : {} }
+      , tbl = { ipaddrs: {}, ifnames : {} }
       ;
 
     arp.table(function(err, entry) {
@@ -28,7 +28,14 @@ API
       if (!entry) return;
 
       tbl.ipaddrs[entry.ip] = entry.mac;
-      tbl.macaddrs[entry.mac] = entry.ip;
+      if (!tbl.ifnames[entry.ifname]) tbl.ifnames[entry.ifname] = {};
+      tbl.ifnames[entry.ifname][entry.mac] = entry.ip;
+    });
+
+    arp.ifTable(function(err, entry) {
+      if (err) return console.log('arp: ' + err.message);
+
+      if (!!entry) console.log(entry);
     });
 
 License
