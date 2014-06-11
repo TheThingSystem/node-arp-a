@@ -6,6 +6,7 @@
 #include <sys/types.h>
 #include <sys/sysctl.h>
 
+#include <net/if.h>
 #include <net/route.h>
 #include <netinet/if_ether.h>
 #include <net/if_dl.h>
@@ -58,6 +59,7 @@ Handle<Value> ArpTable(const Arguments& args) {
 // step 3: fill-in the array
 
   i = 0;
+  struct if_nameindex *ifp = if_nameindex();
   for (ptr = head; ptr < tail; ptr += rtm->rtm_msglen) {
     rtm = (struct rt_msghdr *) ptr;
 
@@ -67,14 +69,21 @@ Handle<Value> ArpTable(const Arguments& args) {
     char    lladdr[(6 * 3) + 1];
     u_char *ll = (u_char *) LLADDR(sdl);
     if (sdl->sdl_alen == 0) continue;
+
+    struct if_nameindex *ifx = NULL;
+    if (ifp) {
+      for (ifx = ifp; (ifx -> if_index != 0) && (ifx -> if_name != NULL); ifx++) if (ifx->if_index == rtm-> rtm_index) break;
+    }
     snprintf(lladdr, sizeof lladdr, "%02x:%02x:%02x:%02x:%02x:%02x", ll[0], ll[1], ll[2], ll[3], ll[4], ll[5]);
 
     Local<Object> entry = Object::New();
     entry->Set(NODE_PSYMBOL("ip"), String::New(inet_ntoa(sin->sin_addr)));
+    entry->Set(NODE_PSYMBOL("ifname"), String::New(ifx ? ifx -> if_name : ""));
     entry->Set(NODE_PSYMBOL("mac"), String::New(lladdr));
     entries->Set(i++, entry);
   }
 
+  if_freenameindex(ifp);
   free (head);
 
   return scope.Close(entries);
