@@ -98,7 +98,7 @@ if (process.platform.indexOf('win') === 0) {
 
     stdout = '';
     stderr = '';
-    arp = child.spawn('/tmp/arp.sh', [ '-a' ]);
+    arp = child.spawn('arp', [ '-a' ]);
     arp.stdin.end();
     arp.stdout.on('data', function(data) { stdout += data.toString() ; });
     arp.stderr.on('data', function(data) { stderr += data.toString() ; });
