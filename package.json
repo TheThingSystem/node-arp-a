@@ -1,6 +1,6 @@
 {
   "name"           : "arp-a"
-, "version"        : "0.5.0"
+, "version"        : "0.5.1"
 , "description"    : "node.js native implementation (when possible) of 'arp -a'"
 , "author": {
     "name"           : "Marshall Rose"

@@ -11,9 +11,3 @@
       if (!tbl.ifnames[entry.ifname]) tbl.ifnames[entry.ifname] = {};
       tbl.ifnames[entry.ifname][entry.mac] = entry.ip;
     });
-
-    arp.ifTable(function(err, entry) {
-      if (err) return console.log('arp: ' + err.message);
-
-      if (!!entry)  return console.log(util.inspect(entry, { depth: null }));
-    });
