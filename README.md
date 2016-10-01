@@ -32,12 +32,6 @@ API
       tbl.ifnames[entry.ifname][entry.mac] = entry.ip;
     });
 
-    arp.ifTable(function(err, entry) {
-      if (err) return console.log('arp: ' + err.message);
-
-      if (!!entry) console.log(entry);
-    });
-
 License
 =======
 

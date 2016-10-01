@@ -16,18 +16,6 @@ if (process.platform.indexOf('darwin') === 0) {
 
     cb(null, null);
   };
-
-  exports.ifTable = function(cb) {
-    var i, table;
-
-    try { table = arp.ifTable(); } catch(ex) { return cb(ex, null); }
-
-    for (i = 0; i < table.length; i++) {
-      cb(null, table[i]);
-    }
-
-    cb(null, null);
-  };
 }
 
 if (process.platform.indexOf('linux') === 0) {
@@ -57,26 +45,6 @@ if (process.platform.indexOf('linux') === 0) {
       }
 
       cb(null, null);
-    });
-  };
-
-  exports.ifTable = function(cb) {
-    fs.readdir('/sys/class/net', function(err, files) {
-      var i, j;
-
-      if (!!err) return cb(err, null);
-
-      var f = function(ifn) {
-        return function(err, data) {
-          if (!!err) { j = files.length; return cb(err, null); }
-
-          cb (null, { name: ifn, mac: data.toString().trim() });
-          if (++j == files.length) cb(null, null);
-        };
-      };
-
-      j = 0;
-      for (i = 0; i < files.length; i++) fs.readFile('/sys/class/net/' + files[i] + '/address', f(files[i]));
     });
   };
 }
@@ -119,9 +87,6 @@ if (process.platform.indexOf('win') === 0) {
       cb(null, null);
     });
   };
-
-
-  exports.ifTable = function(cb) { cb(new Error('ifTable not supported for windows')); };
 }
 
 exports.table = exports.arpTable;
