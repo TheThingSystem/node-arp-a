@@ -61,6 +61,8 @@ if (process.platform.indexOf('win') === 0) {
 
  */
 
+  var ipv4_mac_reg = /((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))\s+(([0-9a-fA-F]{2}(:|-)){5}[0-9a-fA-F]{2})/iu;
+
   exports.arpTable = function(cb) {
     var arp, cols, i, lines, stderr, stdout;
 
@@ -74,13 +76,15 @@ if (process.platform.indexOf('win') === 0) {
     arp.on('close', function(code) {
       if (code !== 0) return cb(new Error('exit code ' + code + ', reason: ' + stderr), null);
 
-      lines = stdout.split('\r');
+      lines = stdout.split('\n');
       for (i = 0; i < lines.length; i++) {
         if (i < 3) continue;
-
-        cols = lines[i].replace(/ [ ]*/g, ' ').split(' ');
-        if ((cols.length === 4) && (cols[1].length !== 0) && (cols[2].length !== 0)) {
-          cb(null, { ip: cols[1], mac: cols[2] });
+        var m = ipv4_mac_reg.exec(lines[i]);
+        if (m) {
+          cb(null, {
+            ip: m[1],
+            mac: m[6].replace(/-/g, ':')
+          });
         }
       }
 
