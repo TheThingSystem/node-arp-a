@@ -34,7 +34,7 @@ API
 
 # Thanks
 Thanks to everyone who's helped contribute code, feedback and support.  In particular:
-* [TheThingSystem](https://github.com/TheThingSystem/node-arp-a) - for the original plugin
+* [TheThingSystem](https://github.com/TheThingSystem/node-arp-a) - for the original node-arp-a
 
 License
 =======
