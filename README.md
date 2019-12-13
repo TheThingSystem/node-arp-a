@@ -13,7 +13,7 @@ Also, I wanted a node.js module that returns the entire ARP table.
 Install
 -------
 
-    npm install arp-a-x
+    npm install -g --unsafe-perm arp-a-x
 
 
 API
