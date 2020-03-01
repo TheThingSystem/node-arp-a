@@ -1,4 +1,4 @@
-node-arp-a
+node-arp-a-x
 ==========
 
 A node.js native implementation (when possible) of "arp -a"
@@ -13,13 +13,13 @@ Also, I wanted a node.js module that returns the entire ARP table.
 Install
 -------
 
-    npm install arp-a
+    npm install -g --unsafe-perm arp-a-x
 
 
 API
 ---
 
-    var arp = require('arp-a')
+    var arp = require('arp-a-x')
       , tbl = { ipaddrs: {}, ifnames : {} }
       ;
 
@@ -31,6 +31,10 @@ API
       if (!tbl.ifnames[entry.ifname]) tbl.ifnames[entry.ifname] = {};
       tbl.ifnames[entry.ifname][entry.mac] = entry.ip;
     });
+
+# Thanks
+Thanks to everyone who's helped contribute code, feedback and support.  In particular:
+* [TheThingSystem](https://github.com/TheThingSystem/node-arp-a) - for the original node-arp-a
 
 License
 =======
